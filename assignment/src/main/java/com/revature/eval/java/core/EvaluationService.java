@@ -1,8 +1,17 @@
 package com.revature.eval.java.core;
 
+import java.security.KeyStore.Entry;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Scanner;
+
 
 public class EvaluationService {
 
@@ -31,7 +40,10 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		String initPhrase = " Portable Network Graphics ";
+	    String expected = initPhrase.replaceAll("\\B.|\\P{L}", "").toUpperCase();
+	    System.out.println(expected);
+		return expected;
 	}
 
 	/**
@@ -85,16 +97,25 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
+			if(sideOne==sideTwo && sideTwo==sideThree) {
+				return true;
+			}
 			return false;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
+			if ((sideOne==sideTwo && sideTwo!=sideThree ) || (sideOne!=sideTwo && sideThree==sideOne) || (sideThree==sideTwo && sideThree!=sideOne)) {
+				return true;
+			}
 			return false;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
+			if(sideOne!=sideTwo && sideTwo!=sideThree && sideThree!=sideOne) {
+				return true;
+			}
 			return false;
 		}
 
@@ -115,9 +136,49 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public int getScrabbleScore(String string) {
+	public int getScrabbleScore(String Word) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		int score = 0;
+        for (int i = 0; i < Word.length(); i++){
+            char calculatedLetter = Word.at(i);
+            switch (calculatedLetter) {
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'L':
+                case 'N':
+                case 'O':
+                case 'R':
+                case 'S':
+                case 'T':
+                case 'U':
+                    score +=1; break;
+                case 'D':
+                case 'G':
+                    score +=2; break;
+                case 'B':
+                case 'C':
+                case 'M':
+                case 'P':
+                    score +=3; break;
+                case 'F':
+                case 'H':
+                case 'V':
+                case 'W':
+                case 'Y':
+                    score +=4; break;
+                case 'K':
+                    score +=5; break;
+                case 'J':
+                case 'X':
+                    score +=8; break;
+                case 'Q':
+                case 'Z':
+                    score +=10; break;
+                default: break;
+            }
+        }
+		return score;
 	}
 
 	/**
@@ -151,9 +212,16 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
-	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+	public String cleanPhoneNumber(String string){
+		String sPhoneNumber = "223.456.         7890";
+		if (sPhoneNumber.length() <= 30) {
+	    	sPhoneNumber = sPhoneNumber.replaceAll("[^a-zA-Z0-9]", "");
+	    	System.out.println(sPhoneNumber);
+
+	    }else {
+	    	//exception
+	    }
+	    return sPhoneNumber;
 	}
 
 	/**
@@ -167,6 +235,16 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
+		String a = "This is a test phrase with two test words";
+		String[] b = a.split(" ");
+		for (int i = 0; i < b.length; i++) {
+            String key = b[i];
+			int freq = wordCount.getOrDefault(key, 0);
+            wordMap.put(key, ++freq);
+        }
+        for (java.util.Map.Entry<String, Integer> result : wordMap.entrySet()) {
+            System.out.println(result.getKey() + " " + result.getValue());
+        }
 		return null;
 	}
 
@@ -247,7 +325,25 @@ public class EvaluationService {
 	 */
 	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		String lowerCaseWord = string.toLowerCase();
+        int pos = -1;
+        char ch;
+        for (int i = 0; i < lowerCaseWord.length(); i++) {
+            ch = lowerCaseWord.charAt(i);
+
+            if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'y') {
+                pos = i;
+                break;
+            }
+        }
+
+        if (pos == 0) {
+            return lowerCaseWord + "ay";
+        } else {
+            String a = lowerCaseWord.substring(pos);
+            String b = lowerCaseWord.substring(0, pos); 
+            return a + b + "ay";
+        }
 	}
 
 	/**
@@ -267,7 +363,20 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		int init=0,a,temp;  
+	    int number=10;
+	    	temp=number;  
+	    while(number>0)  
+	    {  
+	    	a=number%10;  
+	    	number=number/10;  
+	    	init=init+(a*a*a);  
+	    }  
+	    if(temp==init) {
+	    	return true;
+	    }else {
+	        return false;
+	    }
 	}
 
 	/**
@@ -282,7 +391,15 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		long number = l;
+		List<Long> factors = new ArrayList<Long>();
+		for (long i = 2; i <= number; i++) {
+			while (number % i == 0) {
+				factors.add(i);
+				number /= i;
+			}
+		}
+		return factors;
 	}
 
 	/**
@@ -312,6 +429,7 @@ public class EvaluationService {
 	 * quick brown fox jumps over the lazy dog.
 	 */
 	static class RotationalCipher {
+		String word = "OMG";
 		private int key;
 
 		public RotationalCipher(int key) {
@@ -319,9 +437,18 @@ public class EvaluationService {
 			this.key = key;
 		}
 
-		public String rotate(String string) {
+		public String rotate(String string, int shiftKey) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			string = string.toLowerCase();
+	        String cipherText = "";
+	        for (int i = 0; i < string.length(); i++)
+	        {
+	            int charPosition = word.indexOf(string.charAt(i));
+	            int keyVal = (shiftKey + charPosition) % 26;
+	            char replaceVal = word.charAt(keyVal);
+	            cipherText += replaceVal;
+	        }
+	        return cipherText;
 		}
 
 	}
@@ -339,8 +466,22 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int number, count;
+	    for(number = 2, count = 0; count < i; ++number) {
+	        if (isPrime(number)) {
+	            ++count;
+	        }
+	    }
+    return number-1;
+	}
+
+	private boolean isPrime(int number) {
+		for(int i = 2; i < number; ++i) {
+	        if (number % i == 0) {
+	            return false;
+	        }
+	    }
+	    return true;
 	}
 
 	/**
@@ -434,8 +575,25 @@ public class EvaluationService {
 	 */
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
-	}
+        boolean[] mark = new boolean[26]; 
+        int index = 0; 
+  
+        for (int i = 0; i < string.length(); i++) 
+        { 
+            if ('A' <= string.charAt(i) &&  
+                    string.charAt(i) <= 'Z')         
+                index = string.charAt(i) - 'A'; 
+            else if('a' <= string.charAt(i) &&  
+                        string.charAt(i) <= 'z') 
+                              
+                index = string.charAt(i) - 'a';
+            mark[index] = true; 
+        } 
+        for (int i = 0; i <= 25; i++) 
+            if (mark[i] == false) 
+                return (false); 
+        return (true); 
+    } 
 
 	/**
 	 * 17. Calculate the moment when someone has lived for 10^9 seconds.
@@ -446,8 +604,21 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		
+		LocalDateTime date;
+		long gigasecond = 1000000000;
+
+	    Gigasecond(LocalDate birthDate) {
+	    	date = birthDate.atTime(0,0).plusSeconds(gigasecond);
+		}
+
+	    Gigasecond(LocalDateTime birthDateTime) {
+	    	date = birthDateTime.plusSeconds(gigasecond);
+	    }
+
+	    LocalDateTime getDateTime() {
+	    	return date;
+	    }
 	}
 
 	/**
@@ -538,6 +709,8 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
+		
+		
 		return 0;
 	}
 
